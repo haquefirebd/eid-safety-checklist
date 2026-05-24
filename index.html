@@ -406,12 +406,26 @@
         }
 
         /* Action Buttons (Not Printable) */
+        .action-buttons-container {
+            position: sticky;
+            bottom: 20px;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+            margin-bottom: 40px;
+        }
+
         .action-buttons {
             display: flex;
             justify-content: center;
             gap: 16px;
-            margin-top: 32px;
-            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--color-border);
         }
 
         .action-btn {
@@ -552,14 +566,14 @@
                     </div>
                     <div class="header-text">
                         <h1 class="headline">Before You Lock the Door:<br>A Fire Safety Checklist for Eid</h1>
-                        <p class="subheadline">A pre-departure guide for every family heading to their village home (গ্রামের বাড়ি)</p>
+                        <p class="subheadline">A pre-departure guide for every family heading to their village home</p>
                     </div>
                 </div>
             </div>
 
             <!-- Content Section -->
             <div class="content">
-                <p class="intro">🕌 Eid is almost here. The bags are packed. The kids are excited. The train tickets are booked. Everyone is rushing to get to their <strong>village home (গ্রামের বাড়ি)</strong> — the warmth of family, the joy of Eid together.</p>
+                <p class="intro">🕌 Eid is almost here. The bags are packed. The kids are excited. The train tickets are booked. Everyone is rushing to get to their <strong>village home</strong> — the warmth of family, the joy of Eid together.</p>
                 
                 <div class="quote-box">
                     <p>"Is our home truly safe while we're gone?"</p>
@@ -693,16 +707,18 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="action-btn btn-pdf" onclick="downloadPDF()">
-                <i class="ti ti-file-type-pdf"></i> Download as PDF
-            </button>
-            <button class="action-btn btn-img" onclick="downloadImage()">
-                <i class="ti ti-photo"></i> Save as Image (PNG)
-            </button>
-            <button class="action-btn" style="background: white; border: 1px solid var(--color-border);" onclick="window.print()">
-                <i class="ti ti-printer"></i> Print Directly
-            </button>
+        <div class="action-buttons-container">
+            <div class="action-buttons">
+                <button class="action-btn btn-pdf" onclick="downloadPDF()">
+                    <i class="ti ti-file-type-pdf"></i> Save as PDF
+                </button>
+                <button class="action-btn btn-img" onclick="downloadImage()">
+                    <i class="ti ti-photo"></i> Save as Image (PNG)
+                </button>
+                <button class="action-btn" style="background: white; border: 1px solid var(--color-border);" onclick="window.print()">
+                    <i class="ti ti-printer"></i> Print Directly
+                </button>
+            </div>
         </div>
 
     </div>

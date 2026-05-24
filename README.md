@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="images/logo.png" alt="HFST Logo" width="150" />
-  <p><strong>A pre-departure guide for every family heading to their village home (গ্রামের বাড়ি).</strong></p>
+  <p><strong>A pre-departure guide for every family heading to their village home.</strong></p>
 </div>
 
 ![Checklist Preview](https://img.shields.io/badge/Status-Live-success)
