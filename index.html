@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Fire Safety Checklist | HFST</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.36.0/tabler-icons.min.css">
+    <!-- Scripts for PDF/PNG Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --color-primary: #D9161B; /* Red from logo */
+            --color-primary-light: #FEF2F2;
+            --color-secondary: #162135; /* Navy from logo */
+            --color-text-main: #1F2937;
+            --color-text-muted: #6B7280;
+            --color-bg: #F3F4F6;
+            --color-card-bg: #FFFFFF;
+            --color-border: #E5E7EB;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Printable Area */
+        #printable-area {
+            background: var(--color-card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--color-secondary) 0%, #0d1420 100%);
+            padding: 40px 40px 30px;
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zM20 0h20v20H20V0z" fill="rgba(255,255,255,0.02)" fill-rule="evenodd"/></svg>');
+            opacity: 0.5;
+        }
+
+        .flame-bg {
+            position: absolute;
+            right: 20px;
+            top: -10px;
+            font-size: 140px;
+            opacity: 0.05;
+            transform: rotate(15deg);
+            pointer-events: none;
+            color: var(--color-primary);
+        }
+
+        /* Custom Logo */
+        .header-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 28px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            background: white;
+            display: inline-flex;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo-img {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            line-height: 1.2;
+            margin: 0 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subheadline {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+        }
+
+        /* Content Body */
+        .content {
+            padding: 40px;
+            background: white;
+        }
+
+        .intro {
+            font-size: 16px;
+            color: var(--color-text-main);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .intro strong {
+            color: var(--color-secondary);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--color-primary);
+            padding: 16px 20px;
+            background: var(--color-primary-light);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 24px 0;
+        }
+
+        .quote-box p {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--color-secondary);
+            margin: 0;
+        }
+
+        .alert-box {
+            display: flex;
+            gap: 16px;
+            background: #FFF5F5;
+            border: 1px solid #FED7D7;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 32px;
+            align-items: flex-start;
+        }
+
+        .alert-icon {
+            color: var(--color-primary);
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-box p {
+            font-size: 14px;
+            color: #9B2C2C;
+            margin: 0;
+        }
+
+        /* Checklist Sections */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-secondary);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-bg);
+        }
+
+        .section-title i {
+            color: var(--color-primary);
+            font-size: 20px;
+            background: var(--color-primary-light);
+            padding: 6px;
+            border-radius: 8px;
+        }
+
+        /* Interactive Checklist Items */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 10px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item:hover {
+            background-color: var(--color-bg);
+        }
+
+        .checkbox-custom {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #D1D5DB;
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .checkbox-custom i {
+            color: white;
+            font-size: 14px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .checklist-item.checked .checkbox-custom {
+            background-color: #10B981;
+            border-color: #10B981;
+        }
+
+        .checklist-item.checked .checkbox-custom i {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .item-text {
+            font-size: 15px;
+            color: var(--color-text-main);
+            transition: color 0.2s;
+        }
+
+        .checklist-item.checked .item-text {
+            color: var(--color-text-muted);
+            text-decoration: line-through;
+        }
+
+        .item-text span {
+            display: block;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+            text-decoration: none !important;
+        }
+
+        .divider {
+            border: 0;
+            height: 1px;
+            background: var(--color-border);
+            margin: 32px 0;
+        }
+
+        /* Footer & CTA */
+        .summary-text {
+            text-align: center;
+            font-size: 16px;
+            color: var(--color-secondary);
+        }
+
+        .summary-text span {
+            display: block;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .cta-box {
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--color-text-main);
+        }
+
+        .cta-text strong {
+            color: var(--color-primary);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid var(--color-border);
+            padding: 10px 20px;
+            border-radius: 99px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0,0,0,0.1);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .contact-btn i {
+            color: var(--color-primary);
+            font-size: 18px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 12px;
+            background: white;
+            color: var(--color-text-muted);
+            padding: 4px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+        }
+
+        /* Bottom Banner */
+        .bottom-banner {
+            background: var(--color-primary);
+            color: white;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .banner-msg {
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.05em;
+        }
+
+        .banner-sub {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Action Buttons (Not Printable) */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+            margin-bottom: 40px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-pdf {
+            background: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: #0d1420;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-img {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-img:hover {
+            background: #b91317;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 24px;
+            }
+            .logo-container {
+                margin: 0 auto;
+            }
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+            .header, .content, .bottom-banner {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .headline {
+                font-size: 26px;
+            }
+            .bottom-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .action-buttons {
+                display: none !important;
+            }
+            #printable-area {
+                box-shadow: none;
+                border: none;
+            }
+            .checklist-item {
+                break-inside: avoid;
+            }
+            .section {
+                break-inside: avoid;
+            }
+        }
+
+        /* Loading Overlay for Export */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p style="font-weight: 600; color: var(--color-secondary);" id="loadingText">Generating document...</p>
+    </div>
+
+    <div class="container">
+        <!-- Checklist Card -->
+        <div id="printable-area">
+            
+            <!-- Header Section -->
+            <div class="header">
+                <i class="ti ti-flame flame-bg"></i>
+                
+                <div class="header-grid">
+                    <div class="logo-container">
+                        <img src="images/logo.png" alt="HFST Logo" class="logo-img">
+                    </div>
+                    <div class="header-text">
+                        <h1 class="headline">Before You Lock the Door:<br>A Fire Safety Checklist for Eid</h1>
+                        <p class="subheadline">A pre-departure guide for every family heading to গ্রামের বাড়ি</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="content">
+                <p class="intro">🕌 Eid is almost here. The bags are packed. The kids are excited. The train tickets are booked. Everyone is rushing to get to <strong>গ্রামের বাড়ি</strong> — the warmth of family, the joy of Eid together.</p>
+                
+                <div class="quote-box">
+                    <p>"Is our home truly safe while we're gone?"</p>
+                </div>
+
+                <div class="alert-box">
+                    <i class="ti ti-alert-triangle-filled alert-icon"></i>
+                    <p>Every year in Bangladesh, fire incidents <strong>spike during Eid holidays</strong> — empty homes, unattended appliances, gas lines left open. A single overlooked switch can turn your Eid into a tragedy.</p>
+                </div>
+
+                <!-- Sections -->
+                <div class="section">
+                    <div class="section-title"><i class="ti ti-plug"></i> Electrical Safety</div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Unplug all non-essential appliances <span>Iron, chargers, TV, washing machine, microwave</span></div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Switch off the main circuit breaker <span>Only if the home will be fully empty and fridge is emptied</span></div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Check refrigerators and extension cords <span>Do NOT leave refrigerators on overloaded or damaged extensions</span></div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Inspect lights and switches <span>Check for flickering lights or sparking switches; fix before leaving</span></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><i class="ti ti-tools-kitchen-2"></i> Kitchen Safety</div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Turn off the gas cylinder valve completely <span>Do not just turn off the burner knob</span></div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Disconnect the regulator <span>Remove it from the cylinder entirely for maximum safety</span></div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Clear the stove area <span>Ensure no food, cloth, or paper is left near the burners</span></div>
+                    </div>
+                </div>
+
+                <div class="grid-layout">
+                    <div class="section">
+                        <div class="section-title"><i class="ti ti-candle"></i> Decorations</div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Remove all candles & incense</div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Unplug fairy lights & LEDs</div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Keep fabrics away from bulbs</div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title"><i class="ti ti-home-shield"></i> Around the Home</div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Store flammable liquids safely</div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Dispose of dry waste & trash</div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                            <div class="item-text">Ensure fire exits are unblocked</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><i class="ti ti-device-mobile-message"></i> Before the Final Goodbye</div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Inform a trusted neighbor that you are leaving</div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Share your contact with building security or caretaker</div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox-custom"><i class="ti ti-check"></i></div>
+                        <div class="item-text">Take a quick photo/video walkthrough before locking up</div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <p class="summary-text">
+                    <strong>✅ A 2-minute checklist today can protect years of memories tomorrow.</strong>
+                    <span>Share this with your family, neighbors & building group chat.</span>
+                </p>
+
+                <div class="cta-box">
+                    <p class="cta-text">📞 Need a <strong>pre-Eid fire safety inspection</strong> for your home or office? Contact HFST today.</p>
+                    <div class="contact-links">
+                        <a href="https://www.facebook.com/hfstbd" target="_blank" class="contact-btn">
+                            <i class="ti ti-brand-facebook-filled"></i> facebook.com/hfstbd
+                        </a>
+                        <a href="https://wa.me/8801320580631" target="_blank" class="contact-btn">
+                            <i class="ti ti-brand-whatsapp"></i> WhatsApp HFST
+                        </a>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">#FireSafety</span>
+                        <span class="tag">#EidMubarak</span>
+                        <span class="tag">#EidSafety</span>
+                        <span class="tag">#HFST</span>
+                        <span class="tag">#Bangladesh</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Banner -->
+            <div class="bottom-banner">
+                <div class="banner-msg">🌙 Eid Mubarak to you and your Family</div>
+                <div class="banner-sub">Haque Fire Safety & Technology</div>
+            </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn btn-pdf" onclick="downloadPDF()">
+                <i class="ti ti-file-type-pdf"></i> Download as PDF
+            </button>
+            <button class="action-btn btn-img" onclick="downloadImage()">
+                <i class="ti ti-photo"></i> Save as Image (PNG)
+            </button>
+            <button class="action-btn" style="background: white; border: 1px solid var(--color-border);" onclick="window.print()">
+                <i class="ti ti-printer"></i> Print Directly
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Toggle Checkbox interaction
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+        }
+
+        // Show/Hide Loading Overlay
+        function toggleLoading(show, text = 'Generating document...') {
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('loadingText').innerText = text;
+            if (show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Download as PDF
+        async function downloadPDF() {
+            toggleLoading(true, 'Generating PDF...');
+            
+            // Short delay to allow UI to update
+            await new Promise(r => setTimeout(r, 100));
+
+            const element = document.getElementById('printable-area');
+            
+            const opt = {
+                margin:       [0, 0],
+                filename:     'HFST_Eid_Fire_Safety_Checklist.pdf',
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Promise-based generation
+            html2pdf().set(opt).from(element).save().then(() => {
+                toggleLoading(false);
+            }).catch(err => {
+                console.error('PDF Generation Error:', err);
+                toggleLoading(false);
+                alert('Failed to generate PDF. You can try Print Directly instead.');
+            });
+        }
+
+        // Download as Image (PNG)
+        async function downloadImage() {
+            toggleLoading(true, 'Generating Image...');
+            
+            await new Promise(r => setTimeout(r, 100));
+
+            const element = document.getElementById('printable-area');
+            
+            html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'HFST_Eid_Fire_Safety_Checklist.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                toggleLoading(false);
+            }).catch(err => {
+                console.error('Image Generation Error:', err);
+                toggleLoading(false);
+                alert('Failed to generate Image. You can try Print Directly instead.');
+            });
+        }
+    </script>
+</body>
+</html>
