@@ -742,17 +742,24 @@
         async function downloadPDF() {
             toggleLoading(true, 'Generating PDF...');
             
+            // Scroll to top to prevent html2canvas blank page issues
+            window.scrollTo(0, 0);
+
             // Short delay to allow UI to update
             await new Promise(r => setTimeout(r, 100));
 
             const element = document.getElementById('printable-area');
             
+            // Get exact dimensions of the element to create a single-page PDF
+            const elementWidth = element.offsetWidth;
+            const elementHeight = element.offsetHeight;
+            
             const opt = {
-                margin:       [0, 0],
+                margin:       0,
                 filename:     'HFST_Eid_Fire_Safety_Checklist.pdf',
                 image:        { type: 'jpeg', quality: 1.0 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+                jsPDF:        { unit: 'px', format: [elementWidth, elementHeight], orientation: 'portrait' }
             };
 
             // Promise-based generation
@@ -769,6 +776,9 @@
         async function downloadImage() {
             toggleLoading(true, 'Generating Image...');
             
+            // Scroll to top to prevent html2canvas blank page issues
+            window.scrollTo(0, 0);
+
             await new Promise(r => setTimeout(r, 100));
 
             const element = document.getElementById('printable-area');
@@ -776,6 +786,7 @@
             html2canvas(element, {
                 scale: 2,
                 useCORS: true,
+                scrollY: 0,
                 backgroundColor: '#ffffff'
             }).then(canvas => {
                 const link = document.createElement('a');
