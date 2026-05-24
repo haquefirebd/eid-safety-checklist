@@ -258,9 +258,7 @@
         .checkbox-custom i {
             color: white;
             font-size: 14px;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
         }
 
         .checklist-item.checked .checkbox-custom {
@@ -269,19 +267,20 @@
         }
 
         .checklist-item.checked .checkbox-custom i {
-            opacity: 1;
-            transform: scale(1);
+            display: block;
         }
 
         .item-text {
             font-size: 15px;
             color: var(--color-text-main);
-            transition: color 0.2s;
         }
 
         .checklist-item.checked .item-text {
             color: #9CA3AF;
-            opacity: 0.5;
+        }
+        
+        .checklist-item.checked .item-text span {
+            color: #9CA3AF;
         }
 
         .item-text span {
